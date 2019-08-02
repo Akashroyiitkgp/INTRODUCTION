@@ -1,0 +1,365 @@
+#Scrapping the webpage
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+%matplotlib inline
+from bs4 import BeautifulSoup
+import requests as r
+import pandas as pd
+from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException, UnexpectedAlertPresentException, TimeoutException, WebDriverException
+from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import numpy as np
+import time
+import os
+from lxml import etree
+from lxml.etree import tostring
+
+from urllib.request import urlopen
+from bs4 import BeautifulSoup
+from lxml import html
+import requests
+
+
+
+p=[]
+l=[]
+#Scrapping the webpage
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+%matplotlib inline
+from bs4 import BeautifulSoup
+import requests as r
+import pandas as pd
+from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException, UnexpectedAlertPresentException, TimeoutException, WebDriverException
+from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import numpy as np
+import time
+import os
+from lxml import etree
+from lxml.etree import tostring
+
+from urllib.request import urlopen
+from bs4 import BeautifulSoup
+from lxml import html
+import requests
+
+
+from selenium import webdriver
+driver = webdriver.Chrome()    
+chromeoptions = webdriver.ChromeOptions()
+
+
+
+j=-1
+while (j<len(urls)-1):    #Change for not crashing
+    j=j+1
+    try : 
+        page=requests.get(urls[j],timeout=1800)
+        tree = html.fromstring(page.content)
+        red = [curr for curr in tree.xpath('//font[@color="Red"][@size="2"]/text()')]
+
+        color = [curr for curr in tree.xpath('//font[@color="#993300"][@size="2"]/text()')]
+
+        link = [curr for curr in tree.xpath('//a/text()')]
+
+        driver.get(urls[j])
+
+        tvsq=driver.find_elements_by_xpath('//*[@id="form1"]/center/table/tbody/tr[4]/td[2]/font')[0].text
+
+
+
+        gp=[]
+        i=0
+        while (i<(len(red)-1)):
+            i=i+2
+            gp.append(red[i])
+
+        block=[]
+        i=-1
+        while (i<(len(red)-2)):
+            i=i+2
+            block.append(red[i])   
+
+
+
+        el=[]
+        k=-6
+        while (k<(len(color)-6)):
+            k=k+6
+            el.append(color[k])
+
+        cd=[]
+        k=-5
+        while (k<(len(color)-6)):
+            k=k+6
+            cd.append(color[k])
+
+        lc=[]
+        k=-4
+        while (k<(len(color)-6)):
+            k=k+6
+            lc.append(color[k])
+
+        mc=[]
+        k=-3
+        while (k<(len(color)-6)):
+            k=k+6
+            mc.append(color[k])
+
+        al=[]
+        k=-2
+        while (k<(len(color)-6)):
+            k=k+6
+            al.append(color[k])
+
+        am=[]
+        k=-1
+        while (k<(len(color)-6)):
+            k=k+6
+            am.append(color[k])
+
+
+
+
+        sl=[]
+        i=0
+        while (i<len(link)-1):
+            i=i+1
+            sl.append(i)
+
+
+
+        links=[]
+        i=-1
+        while (i<len(link)-2):
+            i=i+1
+            links.append(link[i])
+
+
+
+        dis=[]
+        i=-1
+        while (i<len(link)-2):
+            i=i+1
+            dis.append(tvsq)
+
+
+
+        l=[sl,dis,block,gp,links,el,cd,lc,mc,al,am]
+
+    except:
+        pass
+        
+    p.append(l)
+    
+    
+    
+s=[]
+g=[]
+i=-1
+while (i<(len(p)-1)):
+    i=i+1
+    s=[list(x) for x in zip(*p[i])]
+    g.append(s)
+    
+    
+from itertools import chain
+
+import pandas as pd
+d=list(chain.from_iterable(g))
+
+
+df=pd.DataFrame(d)
+df=df.rename(columns={0: 'S.no', 1: 'District',2:'Block',3:'Gram Panchayat',4:'Work Name(Work Code)',5:'Executing Level',6:'Completion Date',7:'Est. Labour Component(Rs)',8:'Est. material component(Rs)',9:'Actual exp. On labour(Rs)',10:'Actual exp. On material'})
+
+df['id']=df['Work Name(Work Code)'].apply(lambda x: x[::-1])
+df['id']=df['id'].apply(lambda st: st[st.find(")")+1:st.find("(")])
+df['id']=df['id'].apply(lambda x: x[::-1])
+
+
+df
+    
+
+
+
+
+
+
+
+j=218
+newlist=[]
+s=[]
+while (j<(len(urls)-1)):
+    j=j+1
+    try:
+        html=urlopen(urls[j])
+        soup=BeautifulSoup(html,'lxml')
+        links=[]
+        for link in soup.findAll('a', attrs={'href': re.compile("^")}):
+            links.append(link.get('href'))
+            s.append(links)
+    except:
+        continue
+
+
+
+
+for i in s:
+    if i not in newlist:
+        newlist.append(i)         #Excluding duplicates
+        
+        
+        
+i=-1
+while i<(len(newlist)-1):
+    i=i+1
+    del newlist[i][-1]
+    del newlist[i][0]
+    
+
+
+i=-1
+while i<(len(newlist)-1):
+    i=i+1
+    j=-1
+    while j<(len(newlist[i])-1):
+        j=j+1
+        newlist[i][j]=newlist[i][j].replace('../../','http://mnregaweb4.nic.in/netnrega/')
+        
+from itertools import chain
+d=list(chain.from_iterable(newlist))        
+
+
+
+from selenium import webdriver
+driver = webdriver.Chrome()    
+chromeoptions = webdriver.ChromeOptions()
+s=[]
+n=[]
+q=-1
+x=0
+k=[]
+l=[]
+
+while x<(len(d)-1):
+    x=x+1
+    try:
+        driver.get(d[x])
+        if driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[6]/td[1]')[0].text=="Location": 
+            workname=driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[2]/td[2]')[0]
+            workname=workname.text
+            Nature=driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[3]/td[2]')[0]
+            Nature=Nature.text
+            Work_Status =driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[4]/td[2]')[0]
+            Work_Status= Work_Status.text
+            Start_Status=driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[5]/td[2]/table/tbody/tr[2]/td[1]')[0]
+            Start_Status=Start_Status.text
+            End_Status=driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[5]/td[2]/table/tbody/tr[2]/td[2]')[0]
+            End_Status=End_Status.text
+            Sanction =driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[7]/td[1]')[0]
+            Sanction= Sanction.text
+            Included_in_Five_Year=driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[7]/td[2]')[0]
+            Included_in_Five_Year=Included_in_Five_Year.text
+            Approved_in_Annual_Plan=driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[8]/td[1]')[0]
+            Approved_in_Annual_Plan=Approved_in_Annual_Plan.text
+            Estimated_Cost=driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[8]/td[2]')[0]
+            Estimated_Cost=Estimated_Cost.text
+            Estimated_Completion_Time=driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[9]/td[2]')[0]
+            Estimated_Completion_Time=Estimated_Completion_Time.text
+            Pesrondays=driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[12]/td/table/tbody/tr[2]/td[2]')[0]
+            Pesrondays=Pesrondays.text
+            Persons_Given_Work=driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[12]/td/table/tbody/tr[2]/td[3]')[0]    
+            Persons_Given_Work=Persons_Given_Work.text
+            start_date=driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[14]/td[2]')[0]
+            start_date=start_date.text
+            l=[workname,Nature,Work_Status,Start_Status,End_Status,Sanction,Included_in_Five_Year,Approved_in_Annual_Plan,Estimated_Cost,Estimated_Completion_Time,Pesrondays,Persons_Given_Work,start_date]
+        elif driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[6]/td[1]/nobr/p/strong/font')[0].text=="Sanction No. and Sanction Date": 
+            workname=driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[2]/td[2]')[0]
+            workname=workname.text
+            Nature=driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[3]/td[2]')[0]
+            Nature=Nature.text
+            Work_Status =driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[4]/td[2]')[0]
+            Work_Status= Work_Status.text
+            Start_Status=driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[5]/td[2]/table/tbody/tr[2]/td[1]')[0]
+            Start_Status=Start_Status.text
+            End_Status=driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[5]/td[2]/table/tbody/tr[2]/td[2]')[0]
+            End_Status=End_Status.text
+            Sanction =driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[6]/td[1]')[0]
+            Sanction= Sanction.text
+            Included_in_Five_Year=driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[6]/td[2]')[0]
+            Included_in_Five_Year=Included_in_Five_Year.text
+            Approved_in_Annual_Plan=driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[7]/td[1]')[0]
+            Approved_in_Annual_Plan=Approved_in_Annual_Plan.text
+            Estimated_Cost=driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[7]/td[2]')[0]
+            Estimated_Cost=Estimated_Cost.text
+            Estimated_Completion_Time=driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[8]/td[2]')[0]
+            Estimated_Completion_Time=Estimated_Completion_Time.text
+            Pesrondays=driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[11]/td/table/tbody/tr[2]/td[2]')[0]
+            Pesrondays=Pesrondays.text
+            Persons_Given_Work=driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[11]/td/table/tbody/tr[2]/td[3]')[0]    
+            Persons_Given_Work=Persons_Given_Work.text
+            start_date=driver.find_elements_by_xpath('/html/body/center/form/table[3]/tbody/tr[13]/td[2]')[0]
+            start_date=start_date.text
+            l=[workname,Nature,Work_Status,Start_Status,End_Status,Sanction,Included_in_Five_Year,Approved_in_Annual_Plan,Estimated_Cost,Estimated_Completion_Time,Pesrondays,Persons_Given_Work,start_date]
+        else:
+            n.append(x)
+    except:
+        continue
+    s.append(l)    
+    
+
+
+s
+
+
+
+
+
+a=pd.DataFrame(s)
+
+#Data Cleaning
+
+a[5]=a[5].str.strip('Sanction No. and Sanction Date :')
+a[6]=a[6].str.strip('Whether Included in Five Year Perspective Plan :     ')
+a[8]=a[8].str.strip('Estimated Cost (In Lakhs) :')
+a['id']=a[0].apply(lambda st: st[st.find("(")+1:st.find(")")])
+a[6]=a[6].str.strip('\n')
+a[7]=a[7].str.strip('Whether Work Approved in Annual Plan:')
+a[7]=a[7].replace("N","No")
+a
+
+
+
+
+
+df_inner = pd.merge(df, a, on='id', how='inner')
+df_inner
+
+df3 = df_inner.rename(columns = {0:'Work Name ',
+                                1:'Nature of Work',
+                                2:'Work Status',
+                                3:'Start Status',
+                                4:'End Status',
+                                5:'Sanction No. and Sanction Date',
+                                6:'Whether included in 5 year perspective plan',
+                                7:'Whether work approved in Annual Plan',
+                                8:'Estimated Cost(in lakhs)',
+                                9:'Estimated completion time (in months)',
+                                10:'Persondays',
+                                11:'Total no of persons given work',
+                                12:'Start Date'
+                                }) 
+df3
